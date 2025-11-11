@@ -21,19 +21,22 @@ COLORS = {
 
 # ASCII art banner
 DEEP_AGENTS_ASCII = """
- ██████╗  ███████╗ ███████╗ ██████╗
- ██╔══██╗ ██╔════╝ ██╔════╝ ██╔══██╗
- ██║  ██║ █████╗   █████╗   ██████╔╝
- ██║  ██║ ██╔══╝   ██╔══╝   ██╔═══╝
- ██████╔╝ ███████╗ ███████╗ ██║
- ╚═════╝  ╚══════╝ ╚══════╝ ╚═╝
-
-  █████╗   ██████╗  ███████╗ ███╗   ██╗ ████████╗ ███████╗
- ██╔══██╗ ██╔════╝  ██╔════╝ ████╗  ██║ ╚══██╔══╝ ██╔════╝
- ███████║ ██║  ███╗ █████╗   ██╔██╗ ██║    ██║    ███████╗
- ██╔══██║ ██║   ██║ ██╔══╝   ██║╚██╗██║    ██║    ╚════██║
- ██║  ██║ ╚██████╔╝ ███████╗ ██║ ╚████║    ██║    ███████║
- ╚═╝  ╚═╝  ╚═════╝  ╚══════╝ ╚═╝  ╚═══╝    ╚═╝    ╚══════╝
+  ;                                                                                                                     
+  ED.                                                                                                                   
+  E#Wi         :                                                                              ,;L.                      
+  E###G.       Ef                         .                                       .Gt       f#i EW:        ,ft          
+  E#fD#W;      E#t             ..       : Ef.                          ..        j#W:     .E#t  E##;       t#E GEEEEEEEL
+  E#t t##L     E#t            ,W,     .Et E#Wi                        ;W,      ;K#f      i#W,   E###t      t#E ,;;L#K;;.
+  E#t  .E#K,   E#t           t##,    ,W#t E#K#D:                     j##,    .G#D.      L#D.    E#fE#f     t#E    t#E   
+  E#t    j##f  E#t fi       L###,   j###t E#t,E#f.  .......         G###,   j#K;      :K#Wfff;  E#t D#G    t#E    t#E   
+  E#t    :E#K: E#t L#j    .E#j##,  G#fE#t E#WEE##Wt .AS-FUCK.     :E####, ,K#f   ,GD; i##WLLLLt E#t  f#E.  t#E    t#E   
+  E#t   t##L   E#t L#L   ;WW; ##,:K#i E#t E##Ei;;;;.             ;W#DG##,  j#Wi   E#t  .E#L     E#t   t#K: t#E    t#E   
+  E#t .D#W;    E#tf#E:  j#E.  ##f#W,  E#t E#DWWt                j###DW##,   .G#D: E#t    f#E:   E#t    ;#W,t#E    t#E   
+  E#tiW#G.     E###f  .D#L    ###K:   E#t E#t f#K;             G##i,,G##,     ,K#fK#t     ,WW;  E#t     :K#D#E    t#E   
+  E#K##i       E#K,  :K#t     ##D.    E#t E#Dfff##E,         :K#K:   L##,       j###t      .D#; E#t      .E##E    t#E   
+  E##D.        EL    ...      #G      ..  jLLLLLLLLL;       ;##D.    L##,        .G#t        tt ..         G#E     fE   
+  E#t          :              j                             ,,,      .,,           ;;                       fE      :   
+  L:                                                                                                         ,          
 """
 
 # Interactive commands
@@ -91,6 +94,20 @@ def create_model():
     """
     openai_key = os.environ.get("OPENAI_API_KEY")
     anthropic_key = os.environ.get("ANTHROPIC_API_KEY")
+    llama_host = os.environ.get("LLAMA_CPP_ENV_HOST")
+    
+
+    if llama_host:
+        from .local.local_chat import ChatOpenAILocal
+        host_url = llama_host
+        model = os.environ.get("LLAMA_CPP_ENV_MODEL")
+        temp=0.9
+        return ChatOpenAILocal(
+            model=model,
+            base_url=host_url,
+            temperature=temp,
+            api_key="NA"
+        )
 
     if openai_key:
         from langchain_openai import ChatOpenAI
